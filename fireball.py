@@ -12,7 +12,7 @@ class FireBall:
         
     def move(self, mousepos, playerpos):
         if self.controlled:
-            self.dirrection = Vector2(mousepos[0] - playerpos[0], mousepos[1] - playerpos[1]).normalise() * Vector2(10, 10)
+            self.dirrection = Vector2(mousepos[0] - playerpos[0], mousepos[1] - playerpos[1]).normalise() * Vector2(7, 7)
         self.position += self.dirrection
             
         print(self.dirrection.get_vect())

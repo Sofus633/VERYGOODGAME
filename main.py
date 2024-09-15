@@ -1,19 +1,17 @@
-import pygame
+
 from player import Player
 from fireball import FireBall
 from vector import Vector2
 from logic import *
 from storage import *
-import time
+from tilemap import TileMap
 
 pygame.init()
-screen = pygame.display.set_mode((1920, 1080))
 pygame.display.set_caption('VERRYGOODGAME')
 pygame.mixer.music.set_volume(.5)
 init_sprites()
 
-SPAWN_POSITION_PL = Vector2(100, 100)
-clock = pygame.time.Clock() 
+
 running = True
 
 def initplayer():
@@ -23,17 +21,14 @@ def initplayer():
 
 def displayplayer():
     screen.blit(player1.get_sprite(), player1.get_pos())
-    #print(f"displayed at {player1.get_pos()}")
+
 
 def displayfireball(fireball):
     screen.blit(fireball.get_sprite(), fireball.get_pos())
-player1 = initplayer()
-speed = 3
-timee = time.time()
-allfireballs = []
-fireball_clock = timee
-cast_fireball_clock = timee
 
+player1 = initplayer()
+
+tilemap = TileMap(MAP, screen, "Tiles/Basic.png")
 while running:
     timee = time.time()
     for event in pygame.event.get():
@@ -41,7 +36,7 @@ while running:
 
     if keys[pygame.K_x]:
         print("cast fireball 1",timee, fireball_clock )
-        if fireball_clock + .1 < timee:
+        if fireball_clock + .1 < timee and player1.is_onground():
             print("cast fireball 2")
             fireball_clock = timee
             player1.casting_fireball = True
@@ -98,7 +93,7 @@ while running:
         fireball.move(pygame.mouse.get_pos(), player1.get_pos())
         if fireball.position.get_vect()[0] > screen.get_size()[0] or fireball.position.get_vect()[0] < 0 or fireball.position.get_vect()[1] < 0 or fireball.position.get_vect()[1] > screen.get_size()[1]:
             allfireballs.remove(fireball)
-            
+    tilemap.display()
     displayplayer()
     player1.update(time.time())
     

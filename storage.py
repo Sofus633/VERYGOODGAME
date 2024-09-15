@@ -4,13 +4,15 @@ from vector import Vector2
 from logic import *
 import math
 import random
+import time
+
 ANIMATION_SPRITES = {}
 GROUND_FRICTION = Vector2(0.20, 0.20)
 AIR_FRICTION = Vector2(0.95, 0.95)
 GRAVITY = Vector2(0, .2)
 GROUND = 700
 CELLING = 100
-
+TILE_SIZE = 20
 ANIM_INFO = {
     "jump" : 1,
     "fireball" : .1
@@ -18,8 +20,16 @@ ANIM_INFO = {
 SOUNDS = {
     "Fireball" : "sounds/Fireball.mp3",
 }
+MAP = [[1 if y == 8 else 0 for _ in range(96)] for y in range(54)]
 
-
+speed = 3
+timee = time.time()
+allfireballs = []
+fireball_clock = timee
+cast_fireball_clock = timee
+screen = pygame.display.set_mode((1920, 1080))
+SPAWN_POSITION_PL = Vector2(100, 100)
+clock = pygame.time.Clock() 
 
 def init_sprites():
     
