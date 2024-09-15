@@ -31,20 +31,27 @@ speed = 3
 while running:
     for event in pygame.event.get():
         keys = pygame.key.get_pressed()
+
+    if keys[pygame.K_e]:
+        GRAVITY.y  -= .01
+    if keys[pygame.K_a]:
+        GRAVITY.y  += .01
+        
     if keys[pygame.K_z]:
-        if player1.is_onground():
+        if player1.is_onground() and GRAVITY.y > 0:
             player1.add_velocity(Vector2(0, -speed * 3))
     elif keys[pygame.K_s]:
-        player1.add_velocity(Vector2(0, speed))
-
+        if player1.is_onground() and GRAVITY.y < 0:
+            player1.add_velocity(Vector2(0, speed* 3))
+        
     if keys[pygame.K_q]:
-        player1.add_velocity(Vector2(-speed, 0))
         player1.set_dirrection("left")
+        player1.add_velocity(Vector2(-speed, 0))
         player1.is_moving(True)
     elif keys[pygame.K_d]:
-        player1.is_moving(True)
         player1.set_dirrection("right")
         player1.add_velocity(Vector2(speed, 0))
+        player1.is_moving(True)
     else:
         player1.is_moving(False)
     if not (keys[pygame.K_z] or keys[pygame.K_s] or keys[pygame.K_q] or keys[pygame.K_d]):

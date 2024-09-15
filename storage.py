@@ -7,7 +7,8 @@ ANIMATION_SPRITES = {}
 GROUND_FRICTION = Vector2(0.20, 0.20)
 AIR_FRICTION = Vector2(0.95, 0.95)
 GRAVITY = Vector2(0, .2)
-
+GROUND = 400
+CELLING = 100
 def init_sprites():
     
     SPRITE_HEIGHT = 86

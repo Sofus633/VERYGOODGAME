@@ -21,3 +21,7 @@ class Vector2:
     def set(self, tup):
         self.x , self.y = tup[0], tup[1]
         
+    def normalise(self):
+        mangitude = self.magnitude()
+        self.x /= mangitude
+        self.y /= mangitude

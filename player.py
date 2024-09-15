@@ -26,11 +26,18 @@ class Player:
         self.velocity += vector
         
     def is_onground(self):
-        if self.position.y < 200:
-            self.onground = False
-        else :
-            self.onground = True
-            self.velocity.y = 0
+        if GRAVITY.y > 0:
+            if self.position.y < GROUND:
+                self.onground = False
+            else :
+                self.onground = True
+                self.velocity.y = 0
+        else:
+            if self.position.y > CELLING:
+                self.onground = False
+            else :
+                self.onground = True
+                self.velocity.y = 0
         return self.onground
             
     def is_moving(self, status):
@@ -51,8 +58,9 @@ class Player:
     def animation_run(self):
         if self.anim_frame >= len(ANIMATION_SPRITES[self.animation]):
             self.anim_frame = 0
+        print(self.anim_frame)
         
-        self.sprite = ANIMATION_SPRITES[self.animation][self.anim_frame] if self.dirrection == "right" else pygame.transform.flip(ANIMATION_SPRITES[self.animation][self.anim_frame], True, False)
+        self.sprite = pygame.transform.flip(ANIMATION_SPRITES[self.animation][self.anim_frame], False, False if GRAVITY.y > 0 else True) if self.dirrection == "right" else pygame.transform.flip(ANIMATION_SPRITES[self.animation][self.anim_frame], True, False if GRAVITY.y > 0 else True)
         self.anim_frame += 1
         
     def update(self, time):
