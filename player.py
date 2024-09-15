@@ -12,7 +12,9 @@ class Player:
         self.dirrection = "right"
         self.animation_speed = .15
         self.timestore = time
-        
+        self.animation_playing = False
+        self.casting_fireball = False
+        self.cast = False
     def set_dirrection(self, dire):
         self.dirrection = dire
     
@@ -51,6 +53,8 @@ class Player:
                 self.animation = "Run"
             if not self.onground:
                 self.animation = "Fall"
+            if self.casting_fireball:
+                self.animation = "Attack"
         else:
             self.animation = anim
 
@@ -58,7 +62,11 @@ class Player:
     def animation_run(self):
         if self.anim_frame >= len(ANIMATION_SPRITES[self.animation]):
             self.anim_frame = 0
-        print(self.anim_frame)
+            if self.casting_fireball:
+                self.cast = True
+                pygame.mixer.music.load(SOUNDS["Fireball"])
+                pygame.mixer.music.play(1)
+
         
         self.sprite = pygame.transform.flip(ANIMATION_SPRITES[self.animation][self.anim_frame], False, False if GRAVITY.y > 0 else True) if self.dirrection == "right" else pygame.transform.flip(ANIMATION_SPRITES[self.animation][self.anim_frame], True, False if GRAVITY.y > 0 else True)
         self.anim_frame += 1
@@ -90,3 +98,4 @@ class Player:
     def app_gravity(self):
         if self.onground == False:
             self.velocity.y += GRAVITY.y
+            

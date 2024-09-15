@@ -8,6 +8,14 @@ class Vector2:
     def __add__(self, other):
         return Vector2(self.x + other.x, self.y + other.y)
     
+    def __sub__(self, other):
+        return Vector2(self.x - other.x, self.y - other.y)
+    
+    def pluse(self, voct):
+        self.x = self.x + voct.x
+        self.y = self.y + voct.y
+
+    
     def __mul__(self, scalar):
         
         return Vector2(self.x * scalar.x, self.y * scalar.y)
@@ -25,3 +33,4 @@ class Vector2:
         mangitude = self.magnitude()
         self.x /= mangitude
         self.y /= mangitude
+        return self
