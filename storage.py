@@ -18,7 +18,7 @@ ANIM_INFO = {
     "fireball" : .1
 }
 SOUNDS = {
-    "Fireball" : "sounds/Fireball.mp3",
+    "Fireball" : "Sounds/Fireball.mp3",
 }
 MAP = [[1 if y == 8 else 0 for _ in range(96)] for y in range(54)]
 
