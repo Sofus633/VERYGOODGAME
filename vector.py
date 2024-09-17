@@ -15,6 +15,8 @@ class Vector2:
         self.x = self.x + voct.x
         self.y = self.y + voct.y
 
+    def distance(self, pos):
+        return Vector2(self.x - pos[0] , self.y - pos[1])
     
     def __mul__(self, scalar):
         

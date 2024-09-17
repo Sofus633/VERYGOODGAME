@@ -5,7 +5,7 @@ from vector import Vector2
 from logic import *
 from storage import *
 from tilemap import TileMap
-
+from enemy import FlyGobelin
 pygame.init()
 pygame.display.set_caption('VERRYGOODGAME')
 pygame.mixer.music.set_volume(.5)
@@ -26,8 +26,26 @@ def displayplayer():
 def displayfireball(fireball):
     screen.blit(fireball.get_sprite(), fireball.get_pos())
 
-player1 = initplayer()
+def displayfireballs():
+    for fireball in allfireballs:
+        displayfireball(fireball)
+        fireball.move(pygame.mouse.get_pos(), player1.get_pos())
+        if fireball.position.get_vect()[0] > screen.get_size()[0] or fireball.position.get_vect()[0] < 0 or fireball.position.get_vect()[1] < 0 or fireball.position.get_vect()[1] > screen.get_size()[1]:
+            allfireballs.remove(fireball)
+    
+def displaygobelin():
+    screen.blit(goblein.get_sprite(), goblein.get_pos())
 
+    
+    
+def display_all():
+    tilemap.display()
+    displayfireballs()
+    displayplayer()
+    displaygobelin()
+
+player1 = initplayer()
+goblein = FlyGobelin(Vector2(100, 199))
 tilemap = TileMap(MAP, screen, "Tiles/Basic.png")
 while running:
     timee = time.time()
@@ -78,7 +96,7 @@ while running:
     
     if  player1.cast == True:
         player1.cast = False
-        player1.casting_fireball = False
+        player1.casting_fireball    = False
         casting_fireball = timee
         playerpos = player1.get_pos()
         player1.animation_speed = .15
@@ -88,14 +106,9 @@ while running:
             
         allfireballs.append(FireBall(playerpos[0] + 95, playerpos[1] +20))
         
-    for fireball in allfireballs:
-        displayfireball(fireball)
-        fireball.move(pygame.mouse.get_pos(), player1.get_pos())
-        if fireball.position.get_vect()[0] > screen.get_size()[0] or fireball.position.get_vect()[0] < 0 or fireball.position.get_vect()[1] < 0 or fireball.position.get_vect()[1] > screen.get_size()[1]:
-            allfireballs.remove(fireball)
-    tilemap.display()
-    displayplayer()
+    display_all()
     player1.update(time.time())
+    goblein.move(player1.position)
     
     pygame.display.flip()
     screen.fill(0)

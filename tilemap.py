@@ -7,17 +7,17 @@ class TileMap:
         self.screen = screen
         self.tilesimg = tiles_path
         self.cut_tiles()
+        self.tilemap = None
     def display(self):
         for x in range(len(self.map)):
             for y in range(len(self.map[x])):
-                screen.blit(self.tiles[self.map[x][y]], (x * TILE_SIZE, y * TILE_SIZE))
+                screen.blit(self.tiles[self.map[x][y]], (y * TILE_SIZE, x * TILE_SIZE))
                 
     def cut_tiles(self):
         
         tiles_img = pygame.image.load(self.tilesimg).convert_alpha()
         Number_tiles = math.ceil(tiles_img.get_size()[0] / TILE_SIZE)
         for x in range(0, Number_tiles):
-            print(x * TILE_SIZE)
             left = x * TILE_SIZE
             top = 0
             print(left, top)
