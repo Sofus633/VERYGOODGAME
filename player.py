@@ -15,6 +15,10 @@ class Player:
         self.animation_playing = False
         self.casting_fireball = False
         self.cast = False
+        self.width = 59
+        self.height = 86
+        self.jump = False
+        
     def set_dirrection(self, dire):
         self.dirrection = dire
     
@@ -22,6 +26,7 @@ class Player:
         return self.position.x ,  self.position.y
 
     def get_sprite(self):
+
         return self.sprite 
         
     def add_velocity(self, vector):
@@ -46,26 +51,37 @@ class Player:
         self.moving = status
             
     def set_animation(self, anim = None):
-        if anim == None:    
+        if anim == None:   
             if not self.moving:
                 self.animation = "Idle"
             else:
                 self.animation = "Run"
+                
             if not self.onground:
                 self.animation = "Fall"
+                
             if self.casting_fireball:
                 self.animation = "Attack"
+
+            if self.jump:
+                self.animation = "Jump"
+                self.animation_speed = ANIM_INFO["jump"]
         else:
             self.animation = anim
-
+        return self.animation
         
     def animation_run(self):
+
         if self.anim_frame >= len(ANIMATION_SPRITES[self.animation]):
             self.anim_frame = 0
             if self.casting_fireball:
                 self.cast = True
                 pygame.mixer.music.load(SOUNDS["Fireball"])
                 pygame.mixer.music.play(1)
+            if self.jump:
+                self.jump = False
+                self.animation_speed = .15
+
 
         
         self.sprite = pygame.transform.flip(ANIMATION_SPRITES[self.animation][self.anim_frame], False, False if GRAVITY.y > 0 else True) if self.dirrection == "right" else pygame.transform.flip(ANIMATION_SPRITES[self.animation][self.anim_frame], True, False if GRAVITY.y > 0 else True)

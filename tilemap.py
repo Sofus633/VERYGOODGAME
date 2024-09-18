@@ -20,7 +20,6 @@ class TileMap:
         for x in range(0, Number_tiles):
             left = x * TILE_SIZE
             top = 0
-            print(left, top)
             rect = pygame.Rect(left, top, TILE_SIZE, TILE_SIZE)
             tile = tiles_img.subsurface(rect)
             self.tiles.append(tile)

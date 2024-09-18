@@ -28,13 +28,19 @@ def displayfireball(fireball):
 
 def displayfireballs():
     for fireball in allfireballs:
-        displayfireball(fireball)
+        if not fireball.hide:
+            displayfireball(fireball)
         fireball.move(pygame.mouse.get_pos(), player1.get_pos())
         if fireball.position.get_vect()[0] > screen.get_size()[0] or fireball.position.get_vect()[0] < 0 or fireball.position.get_vect()[1] < 0 or fireball.position.get_vect()[1] > screen.get_size()[1]:
             allfireballs.remove(fireball)
+            allobjects.remove(fireball)
     
 def displaygobelin():
-    screen.blit(goblein.get_sprite(), goblein.get_pos())
+    
+    for gobelin in gobelins:
+        if not gobelin.hide:
+
+            screen.blit(gobelin.get_sprite(), gobelin.get_pos())
 
     
     
@@ -46,16 +52,25 @@ def display_all():
 
 player1 = initplayer()
 goblein = FlyGobelin(Vector2(100, 199))
+gobelins = [goblein]
+allobjects = [goblein, player1]
+for i in range(10):
+    gobleine = FlyGobelin(Vector2(150 * i, 300))
+    allobjects.append(gobleine)
+    gobelins.append(gobleine)
+
+
 tilemap = TileMap(MAP, screen, "Tiles/Basic.png")
+
+
 while running:
     timee = time.time()
     for event in pygame.event.get():
         keys = pygame.key.get_pressed()
 
     if keys[pygame.K_x]:
-        print("cast fireball 1",timee, fireball_clock )
         if fireball_clock + .1 < timee and player1.is_onground():
-            print("cast fireball 2")
+
             fireball_clock = timee
             player1.casting_fireball = True
             cast_fireball_clock = timee
@@ -72,7 +87,10 @@ while running:
         print(GRAVITY.y)
         
     if keys[pygame.K_z]:
+        
         if player1.is_onground() and GRAVITY.y > 0:
+            player1.jump = True
+            player1.anim_frame = 0
             player1.add_velocity(Vector2(0, -speed * 3))
     elif keys[pygame.K_s]:
         if player1.is_onground() and GRAVITY.y < 0:
@@ -103,12 +121,15 @@ while running:
         
         if len(allfireballs) > 0 :
             allfireballs[-1].controlled = False
-            
-        allfireballs.append(FireBall(playerpos[0] + 95, playerpos[1] +20))
-        
+        newfireball = FireBall(playerpos[0] + (+95 if player1.dirrection == "right" else -50), playerpos[1] + (+20 if player1.dirrection == "right" else -20))
+        allfireballs.append(newfireball)
+        allobjects.append(newfireball)
+    check_collitions(allobjects)
     display_all()
-    player1.update(time.time())
-    goblein.move(player1.position)
+    player1.update(timee)
+    for gobelin in gobelins:
+        gobelin.move(player1.position)
+        print(gobelin.position.x, gobelin.position.y)
     
     pygame.display.flip()
     screen.fill(0)

@@ -9,13 +9,15 @@ class FireBall:
         self.anim_frame = 0
         self.controlled = True
         self.sprite = ANIMATION_SPRITES["Fireball"][self.anim_frame]
-        
+        self.width = 26
+        self.height = 25
+        self.hide = False
     def move(self, mousepos, playerpos):
-        if self.controlled:
-            self.dirrection = Vector2(mousepos[0] - playerpos[0], mousepos[1] - playerpos[1]).normalise() * Vector2(7, 7)
-        self.position += self.dirrection
+        if not self.hide:
+            if self.controlled:
+                self.dirrection = Vector2(mousepos[0] - playerpos[0], mousepos[1] - playerpos[1]).normalise() * Vector2(7, 7)
+            self.position += self.dirrection
             
-        print(self.dirrection.get_vect())
 
     def update(self):
         self.move()
